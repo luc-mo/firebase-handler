@@ -2,7 +2,7 @@
   "name": "@snowdrive/firebase-handler",
   "author": "Luciano Morales",
   "license": "GPL-3.0-or-later",
-  "version": "0.0.0-beta.0",
+  "version": "0.0.0-beta.1",
   "private": false,
   "description": "Firestore, Realtime Database and Storage wrapper",
   "keywords": [
@@ -30,7 +30,6 @@
     "format:check": "biome format ."
   },
   "dependencies": {
-    "awilix": "8.0.1",
     "firebase-admin": "11.10.1"
   },
   "devDependencies": {

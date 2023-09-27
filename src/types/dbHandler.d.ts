@@ -1,6 +1,6 @@
 interface DbHandler {
 	getFirestoreInstance: () => FirestoreDb
-	getRealtimeInstance?: () => RealtimeDb
-	getStorageInstance?: () => StorageDb
+	getRealtimeInstance: () => RealtimeDb
+	getStorageInstance: () => StorageDb
 	disconnect: () => void
 }

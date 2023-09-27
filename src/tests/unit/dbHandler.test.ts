@@ -1,13 +1,7 @@
 import { describe, test, expect, vi, beforeEach, afterEach } from 'vitest'
 import { FirebaseHandler } from '../../dbHandler'
 import { adminMock, deleteMock, settingsMock, loggerMock } from '../mocks/unit'
-
-const configMock = {
-	firebase: {
-		databaseURL: 'realtime database test',
-		storageBucket: 'storage bucket test',
-	},
-}
+import { configMock } from '../mocks/config'
 
 describe('Instantiate dbHandler', () => {
 	let dbHandler: FirebaseHandler

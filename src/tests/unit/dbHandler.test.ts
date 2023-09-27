@@ -16,6 +16,7 @@ describe('Instantiate dbHandler', () => {
 		adminMock.initializeApp.mockReturnValue({ delete: deleteMock })
 		adminMock.firestore.mockReturnValue({ settings: settingsMock })
 		adminMock.database.mockReturnValue({})
+		adminMock.storage.mockReturnValue({})
 		// @ts-expect-error
 		dbHandler = new FirebaseHandler({ admin: adminMock, logger: loggerMock, config: configMock })
 	})
@@ -68,6 +69,22 @@ describe('Instantiate dbHandler', () => {
 		expect(adminMock.credential.applicationDefault).toHaveBeenCalledTimes(1)
 		expect(adminMock.initializeApp).toHaveBeenCalledTimes(1)
 		expect(adminMock.database).toHaveBeenCalledTimes(1)
+	})
+
+	test('should create a storage instance', () => {
+		expect(dbHandler.getStorageInstance()).toBeDefined()
+		expect(adminMock.credential.applicationDefault).toHaveBeenCalled()
+		expect(adminMock.initializeApp).toHaveBeenCalled()
+		expect(adminMock.storage).toHaveBeenCalled()
+	})
+
+	test('should create only one storage instance', () => {
+		expect(dbHandler.getStorageInstance()).toBeDefined()
+		expect(dbHandler.getStorageInstance()).toBeDefined()
+		expect(loggerMock.info).toHaveBeenCalledTimes(2)
+		expect(adminMock.credential.applicationDefault).toHaveBeenCalledTimes(1)
+		expect(adminMock.initializeApp).toHaveBeenCalledTimes(1)
+		expect(adminMock.storage).toHaveBeenCalledTimes(1)
 	})
 
 	test('should disconnect from database', () => {

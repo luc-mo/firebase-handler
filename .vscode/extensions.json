@@ -1,0 +1,7 @@
+{
+	"recommendations": [
+    "biomejs.biome",
+    "meganrogge.template-string-converter",
+    "usernamehw.errorlens"
+  ]
+}

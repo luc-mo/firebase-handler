@@ -1,0 +1,67 @@
+{
+	"$schema": "https://biomejs.dev/schemas/1.0.0/schema.json",
+	"javascript": {
+		"formatter": {
+			"quoteStyle": "single",
+			"quoteProperties": "asNeeded",
+			"trailingComma": "es5",
+			"semicolons": "asNeeded"
+		}
+	},
+	"organizeImports": {
+		"enabled": false
+	},
+	"formatter": {
+		"enabled": true,
+		"formatWithErrors": false,
+		"indentStyle": "tab",
+		"indentSize": 2,
+		"lineWidth": 100,
+		"ignore": [
+      "node_modules/**",
+      "dist/**",
+      "*.js",
+      "tsconfig.base.json",
+      "tsconfig.json"
+    ]
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": true,
+			"complexity": {
+				"useSimplifiedLogicExpression": "off"
+			},
+			"correctness": {
+				"noUndeclaredVariables": "off"
+			},
+			"performance": {
+				"noDelete": "warn"
+			},
+			"security": {},
+			"style": {
+				"noNonNullAssertion": "off",
+				"noParameterProperties": "warn",
+				"noRestrictedGlobals": "warn",
+				"noShoutyConstants": "warn",
+				"useExponentiationOperator": "warn",
+				"useFragmentSyntax": "warn",
+				"useShorthandArrayType": "warn"
+			},
+			"suspicious": {
+				"noArrayIndexKey": "off",
+				"noCatchAssign": "off",
+				"noExplicitAny": "off",
+				"noPrototypeBuiltins": "off"
+			},
+			"nursery": {}
+		},
+		"ignore": [
+      "node_modules/**",
+      "dist/**",
+      "*.js",
+      "tsconfig.base.json",
+      "tsconfig.json"
+    ]
+	}
+}

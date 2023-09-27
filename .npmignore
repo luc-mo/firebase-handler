@@ -1,0 +1,10 @@
+# Directories
+.vscode
+node_modules
+src
+
+# Files
+.env*
+tsconfig*
+tsup.config*
+vitest.config*

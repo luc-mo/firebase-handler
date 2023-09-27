@@ -1,17 +1,9 @@
-interface BaseConfig {
+interface FirebaseConfig {
+	databaseURL: string
+	storageBucket: string
+}
+
+interface AppConfig {
+	firebase?: Partial<FirebaseConfig>
 	[key: string]: any
 }
-
-interface StorageConfig extends BaseConfig {
-	firebase: {
-		storageBucket: string
-	}
-}
-
-interface DatabaseConfig extends BaseConfig {
-	firebase: {
-		databaseURL: string
-	}
-}
-
-type AppConfig = BaseConfig & Partial<StorageConfig & DatabaseConfig>

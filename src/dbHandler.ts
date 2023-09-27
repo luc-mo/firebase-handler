@@ -67,6 +67,7 @@ export class FirebaseHandler implements DbHandler {
 
 	private _createStorageInstance() {
 		try {
+			this._assertStorageConfig()
 			this._logger.info('Connecting to storage')
 			const app = this._connect()
 			this._storage = this._admin.storage(app)
@@ -80,6 +81,12 @@ export class FirebaseHandler implements DbHandler {
 	private _assertRealtimeConfig() {
 		if (!this._config.firebase?.databaseURL) {
 			throw new Error('Realtime database is not configured')
+		}
+	}
+
+	private _assertStorageConfig() {
+		if (!this._config.firebase?.storageBucket) {
+			throw new Error('Storage is not configured')
 		}
 	}
 

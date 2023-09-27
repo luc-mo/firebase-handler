@@ -67,4 +67,15 @@ describe('Instantiate partial dbHandler', () => {
 		expect(() => dbHandler.getRealtimeInstance()).toThrow()
 		expect(loggerMock.error).toHaveBeenCalled()
 	})
+
+	test('should throw an error if storage is not configured', () => {
+		dbHandler = new FirebaseHandler({
+			// @ts-expect-error
+			admin: adminMock,
+			logger: loggerMock,
+			config: emptyConfigMock,
+		})
+		expect(() => dbHandler.getStorageInstance()).toThrow()
+		expect(loggerMock.error).toHaveBeenCalled()
+	})
 })

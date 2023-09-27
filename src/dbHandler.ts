@@ -54,6 +54,7 @@ export class FirebaseHandler implements DbHandler {
 
 	private _createRealtimeInstance() {
 		try {
+			this._assertRealtimeConfig()
 			this._logger.info('Connecting to realtime database')
 			const app = this._connect()
 			this._realtimeDb = this._admin.database(app)
@@ -73,6 +74,12 @@ export class FirebaseHandler implements DbHandler {
 		} catch (error) {
 			this._logger.error('Error in storage connection', error)
 			throw new Error(`Error in storage connection: ${error}`)
+		}
+	}
+
+	private _assertRealtimeConfig() {
+		if (!this._config.firebase?.databaseURL) {
+			throw new Error('Realtime database is not configured')
 		}
 	}
 

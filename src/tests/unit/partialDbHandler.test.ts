@@ -19,7 +19,6 @@ describe('Instantiate partial dbHandler', () => {
 
 	test('should create a firestore instance', () => {
 		dbHandler = new FirebaseHandler({
-			// @ts-expect-error
 			admin: adminMock,
 			logger: loggerMock,
 			config: emptyConfigMock,
@@ -33,7 +32,6 @@ describe('Instantiate partial dbHandler', () => {
 
 	test('should create a realtime database instance', () => {
 		dbHandler = new FirebaseHandler({
-			// @ts-expect-error
 			admin: adminMock,
 			logger: loggerMock,
 			config: realtimeConfigMock,
@@ -46,7 +44,6 @@ describe('Instantiate partial dbHandler', () => {
 
 	test('should create a storage instance', () => {
 		dbHandler = new FirebaseHandler({
-			// @ts-expect-error
 			admin: adminMock,
 			logger: loggerMock,
 			config: storageConfigMock,
@@ -59,7 +56,6 @@ describe('Instantiate partial dbHandler', () => {
 
 	test('should throw an error if realtime database is not configured', () => {
 		dbHandler = new FirebaseHandler({
-			// @ts-expect-error
 			admin: adminMock,
 			logger: loggerMock,
 			config: emptyConfigMock,
@@ -70,7 +66,6 @@ describe('Instantiate partial dbHandler', () => {
 
 	test('should throw an error if storage is not configured', () => {
 		dbHandler = new FirebaseHandler({
-			// @ts-expect-error
 			admin: adminMock,
 			logger: loggerMock,
 			config: emptyConfigMock,

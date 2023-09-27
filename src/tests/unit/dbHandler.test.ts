@@ -11,7 +11,6 @@ describe('Instantiate dbHandler', () => {
 		adminMock.firestore.mockReturnValue({ settings: settingsMock })
 		adminMock.database.mockReturnValue({})
 		adminMock.storage.mockReturnValue({})
-		// @ts-expect-error
 		dbHandler = new FirebaseHandler({ admin: adminMock, logger: loggerMock, config: configMock })
 	})
 

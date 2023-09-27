@@ -1,3 +1,12 @@
+import type {
+	DbHandler,
+	FirebaseApp,
+	FirestoreDb,
+	RealtimeDb,
+	StorageDb,
+	Dependencies,
+} from '@/types/dbHandler'
+
 export class FirebaseHandler implements DbHandler {
 	private readonly _admin: Dependencies['admin']
 	private readonly _config: Dependencies['config']

@@ -99,6 +99,10 @@ export class FirebaseHandler implements DbHandler {
 		}
 	}
 
+	/**
+	 * Creates a singleton instance of the Firestore database.
+	 * @returns Firestore database instance
+	 */
 	public getFirestoreInstance() {
 		if (!this._firestoreInstance) {
 			this._firestoreInstance = this._createFirestoreInstance()
@@ -106,6 +110,11 @@ export class FirebaseHandler implements DbHandler {
 		return this._firestoreInstance
 	}
 
+	/**
+	 * Creates a singleton instance of the Realtime database.
+	 * If the configuration does not contain the databaseURL, it will throw an error.
+	 * @returns Realtime database instance
+	 */
 	public getRealtimeInstance() {
 		if (!this._realtimeInstance) {
 			this._realtimeInstance = this._createRealtimeInstance()
@@ -113,6 +122,11 @@ export class FirebaseHandler implements DbHandler {
 		return this._realtimeInstance
 	}
 
+	/**
+	 * Creates a singleton instance of the Storage database.
+	 * If the configuration does not contain the storageBucket, it will throw an error.
+	 * @returns Storage bucket instance
+	 */
 	public getStorageInstance() {
 		if (!this._storageInstance) {
 			this._storageInstance = this._createStorageInstance()
@@ -120,6 +134,10 @@ export class FirebaseHandler implements DbHandler {
 		return this._storageInstance
 	}
 
+	/**
+	 * Disconnects from the database.
+	 * It will delete the app instance and set all the database instances to null.
+	 */
 	public disconnect() {
 		this._logger.info('Disconnecting from database')
 		if (this._app) {

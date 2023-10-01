@@ -2,7 +2,7 @@
   "name": "@snowdrive/firebase-handler",
   "author": "Luciano Morales",
   "license": "GPL-3.0-or-later",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": false,
   "description": "Firestore, Realtime Database and Storage wrapper",
   "keywords": [

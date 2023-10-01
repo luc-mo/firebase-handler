@@ -6,22 +6,40 @@ It's designed to handle singleton instances of those Firebase services, simplify
 [![npm latest package](https://img.shields.io/npm/v/@snowdrive/firebase-handler/latest?color=blue)](https://www.npmjs.com/package/@snowdrive/firebase-handler)
 [![npm downloads](https://img.shields.io/npm/dm/@snowdrive/firebase-handler)](https://www.npmjs.com/package/@snowdrive/firebase-handler)
 
-## Features:
+## Table of Contents
+* [Features](#features)
+* [Installation](#installation)
+  - [Configuration](#configuration)
+  - [Logger](#logger)
+  - [Initialization](#initialization)
+* [Usage](#usage)
+  - [Firestore](#firestore)
+  - [Realtime Database](#realtime-database)
+  - [Storage](#storage)
+  - [Disconnect](#disconnect)
+* [Development](#development)
+  - [Scripts](#scripts)
+* [Dependencies](#dependencies)
+* [Repository](#repository)
+* [License](#license)
+
+
+## Features
 - Singleton instance handlers for Firestore, Realtime Database, and Storage.
 - Built-in disconnect method for easy cleanup.
 - TypeScript support out of the box.
 
-## Installation:
+## Installation
 ```bash
 npm install @snowdrive/firebase-handler
 yarn add @snowdrive/firebase-handler
 pnpm add @snowdrive/firebase-handler
 ```
 
-## Usage:
+## Usage
 Make sure to initialize the library with the required dependencies.
 
-### Configuration:
+### Configuration
 Provide the Firebase configuration details:
 
 ```javascript
@@ -34,7 +52,7 @@ const config = {
 ```
 Note: Both are optional, but you won't be able to use the services that require them.
 
-### Logger:
+### Logger
 Set up your logger (here's a basic example):
 
 ```javascript
@@ -44,7 +62,7 @@ const logger = {
 }
 ```
 
-### Initialization:
+### Initialization
 Using the provided configurations:
 
 ```javascript
@@ -60,38 +78,38 @@ const dependencies = {
 const firebaseHandler = new FirebaseHandler(dependencies)
 ```
 
-### Firestore:
+### Firestore
 ```javascript
 const firestore = firebaseHandler.getFirestoreInstance()
 ```
 
-### Realtime Database:
+### Realtime Database
 ```javascript
 const realtimeDb = firebaseHandler.getRealtimeInstance()
 ```
 Note: Ensure your configuration includes `databaseURL`.
 
-### Storage:
+### Storage
 ```javascript
 const storage = firebaseHandler.getStorageInstance()
 ```
 Note: Ensure your configuration includes `storageBucket`.
 
-### Disconnect:
+### Disconnect
 To disconnect from all services:
 ```javascript
 firebaseHandler.disconnect()
 ```
 
-## Development:
+## Development
 
-### Scripts:
+### Scripts
 - **build**: Compiles the TypeScript code.
 - **test**: Runs tests.
 - **test:watch**: Runs tests in watch mode.
 - **lint** & **format**: For checking and formatting code respectively.
 
-## Dependencies:
+## Dependencies
 - [Firebase Admin SDK](https://www.npmjs.com/package/firebase-admin)
 - [Biome toolchain](https://www.npmjs.com/package/@biomejs/biome)
 - [Tsup bundler](https://www.npmjs.com/package/tsup)
@@ -101,10 +119,10 @@ firebaseHandler.disconnect()
 - [Cross-platform environment variables setter](https://www.npmjs.com/package/cross-env)
 
 
-## Repository:
+## Repository
 Explore the source code, report issues, or contribute to the development of this project at our [GitHub Repository](https://github.com/luc-mo/firebase-handler).
 Your feedback and contributions are highly appreciated!
 
 
-## License:
+## License
 This project is licensed under the GPL-3.0-or-later. See the [LICENSE](https://github.com/luc-mo/firebase-handler/blob/HEAD/LICENSE) file in the repository for details.

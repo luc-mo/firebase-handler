@@ -2,7 +2,7 @@
   "name": "@snowdrive/firebase-handler",
   "author": "Luciano Morales",
   "license": "GPL-3.0-or-later",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "private": false,
   "description": "Firestore, Realtime Database and Storage wrapper",
   "keywords": [
@@ -34,14 +34,14 @@
     "format:check": "biome format ."
   },
   "peerDependencies": {
-    "firebase-admin": "11.10.1"
+    "firebase-admin": "^11.10.1"
   },
   "devDependencies": {
     "@biomejs/biome": "1.2.2",
     "@types/node": "20.7.0",
     "cross-env": "7.0.3",
     "dotenv": "16.3.1",
-    "firebase-admin": "11.10.1",
+    "firebase-admin": "^11.10.1",
     "tsup": "7.2.0",
     "typescript": "5.2.2",
     "vitest": "0.34.5"

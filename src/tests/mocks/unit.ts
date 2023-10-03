@@ -12,6 +12,7 @@ export const adminMock = {
 
 export const deleteMock = vi.fn()
 export const settingsMock = vi.fn()
+export const terminateMock = vi.fn()
 
 export const loggerMock = {
 	info: vi.fn(),

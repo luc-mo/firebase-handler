@@ -1,20 +1,20 @@
-export const emptyConfigMock = {}
+export const baseConfig = {}
 
-export const realtimeConfigMock = {
+export const realtimeConfig = {
 	firebase: {
 		databaseURL: 'realtime database test',
 	},
 }
 
-export const storageConfigMock = {
+export const storageConfig = {
 	firebase: {
 		storageBucket: 'storage bucket test',
 	},
 }
 
-export const configMock = {
+export const config = {
 	firebase: {
-		...realtimeConfigMock.firebase,
-		...storageConfigMock.firebase,
+		...realtimeConfig.firebase,
+		...storageConfig.firebase,
 	},
 }

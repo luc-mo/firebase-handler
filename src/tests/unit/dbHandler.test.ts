@@ -1,17 +1,20 @@
 import { describe, test, expect, vi, beforeEach, afterEach } from 'vitest'
 import { FirebaseHandler } from '../../dbHandler'
-import { adminMock, deleteMock, settingsMock, terminateMock, loggerMock } from '../mocks/unit'
-import { configMock } from '../mocks/config'
+
+import * as adminMocks from '../mocks/firebase-admin'
+import * as loggerMocks from '../mocks/logger'
+import * as configMocks from '../mocks/config'
 
 describe('Instantiate dbHandler', () => {
 	let dbHandler: FirebaseHandler
 
 	beforeEach(() => {
-		adminMock.initializeApp.mockReturnValue({ delete: deleteMock })
-		adminMock.firestore.mockReturnValue({ settings: settingsMock, terminate: terminateMock })
-		adminMock.database.mockReturnValue({})
-		adminMock.storage.mockReturnValue({})
-		dbHandler = new FirebaseHandler({ admin: adminMock, logger: loggerMock, config: configMock })
+		adminMocks.initializeMocks()
+		dbHandler = new FirebaseHandler({
+			admin: adminMocks.admin,
+			config: configMocks.config,
+			logger: loggerMocks.logger,
+		})
 	})
 
 	afterEach(() => {
@@ -30,59 +33,41 @@ describe('Instantiate dbHandler', () => {
 		expect(typeof dbHandler.disconnect).toBe('function')
 	})
 
-	test('should create a database instance', () => {
-		expect(dbHandler.getFirestoreInstance()).toBeDefined()
-		expect(adminMock.credential.applicationDefault).toHaveBeenCalled()
-		expect(adminMock.initializeApp).toHaveBeenCalled()
-		expect(adminMock.firestore).toHaveBeenCalled()
-		expect(settingsMock).toHaveBeenCalled()
-	})
-
-	test('should create only one database instance', () => {
-		expect(dbHandler.getFirestoreInstance()).toBeDefined()
-		expect(dbHandler.getFirestoreInstance()).toBeDefined()
-		expect(loggerMock.info).toHaveBeenCalledTimes(2)
-		expect(adminMock.credential.applicationDefault).toHaveBeenCalledTimes(1)
-		expect(adminMock.initializeApp).toHaveBeenCalledTimes(1)
-		expect(adminMock.firestore).toHaveBeenCalledTimes(1)
-		expect(settingsMock).toHaveBeenCalledTimes(1)
-	})
-
 	test('should create a realtime database instance', () => {
 		expect(dbHandler.getRealtimeInstance()).toBeDefined()
-		expect(adminMock.credential.applicationDefault).toHaveBeenCalled()
-		expect(adminMock.initializeApp).toHaveBeenCalled()
-		expect(adminMock.database).toHaveBeenCalled()
+		expect(adminMocks.credential.applicationDefault).toHaveBeenCalled()
+		expect(adminMocks.initializeApp).toHaveBeenCalled()
+		expect(adminMocks.database).toHaveBeenCalled()
 	})
 
 	test('should create only one realtime database instance', () => {
 		expect(dbHandler.getRealtimeInstance()).toBeDefined()
 		expect(dbHandler.getRealtimeInstance()).toBeDefined()
-		expect(loggerMock.info).toHaveBeenCalledTimes(2)
-		expect(adminMock.credential.applicationDefault).toHaveBeenCalledTimes(1)
-		expect(adminMock.initializeApp).toHaveBeenCalledTimes(1)
-		expect(adminMock.database).toHaveBeenCalledTimes(1)
+		expect(loggerMocks.logger.info).toHaveBeenCalledTimes(2)
+		expect(adminMocks.credential.applicationDefault).toHaveBeenCalledTimes(1)
+		expect(adminMocks.initializeApp).toHaveBeenCalledTimes(1)
+		expect(adminMocks.database).toHaveBeenCalledTimes(1)
 	})
 
 	test('should create a storage instance', () => {
 		expect(dbHandler.getStorageInstance()).toBeDefined()
-		expect(adminMock.credential.applicationDefault).toHaveBeenCalled()
-		expect(adminMock.initializeApp).toHaveBeenCalled()
-		expect(adminMock.storage).toHaveBeenCalled()
+		expect(adminMocks.credential.applicationDefault).toHaveBeenCalled()
+		expect(adminMocks.initializeApp).toHaveBeenCalled()
+		expect(adminMocks.storage).toHaveBeenCalled()
 	})
 
 	test('should create only one storage instance', () => {
 		expect(dbHandler.getStorageInstance()).toBeDefined()
 		expect(dbHandler.getStorageInstance()).toBeDefined()
-		expect(loggerMock.info).toHaveBeenCalledTimes(2)
-		expect(adminMock.credential.applicationDefault).toHaveBeenCalledTimes(1)
-		expect(adminMock.initializeApp).toHaveBeenCalledTimes(1)
-		expect(adminMock.storage).toHaveBeenCalledTimes(1)
+		expect(loggerMocks.logger.info).toHaveBeenCalledTimes(2)
+		expect(adminMocks.credential.applicationDefault).toHaveBeenCalledTimes(1)
+		expect(adminMocks.initializeApp).toHaveBeenCalledTimes(1)
+		expect(adminMocks.storage).toHaveBeenCalledTimes(1)
 	})
 
 	test('should disconnect from database', () => {
 		expect(dbHandler.getFirestoreInstance()).toBeDefined()
 		expect(dbHandler.disconnect()).toBeUndefined()
-		expect(deleteMock).toHaveBeenCalled()
+		expect(adminMocks.deleteMock).toHaveBeenCalled()
 	})
 })

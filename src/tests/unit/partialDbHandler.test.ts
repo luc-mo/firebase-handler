@@ -1,16 +1,15 @@
 import { describe, test, expect, vi, beforeEach, afterEach } from 'vitest'
 import { FirebaseHandler } from '../../dbHandler'
-import { adminMock, deleteMock, settingsMock, terminateMock, loggerMock } from '../mocks/unit'
-import { emptyConfigMock, realtimeConfigMock, storageConfigMock } from '../mocks/config'
+
+import * as adminMocks from '../mocks/firebase-admin'
+import * as loggerMocks from '../mocks/logger'
+import * as configMocks from '../mocks/config'
 
 describe('Instantiate partial dbHandler', () => {
 	let dbHandler: FirebaseHandler
 
 	beforeEach(() => {
-		adminMock.initializeApp.mockReturnValue({ delete: deleteMock })
-		adminMock.firestore.mockReturnValue({ settings: settingsMock, terminate: terminateMock })
-		adminMock.database.mockReturnValue({})
-		adminMock.storage.mockReturnValue({})
+		adminMocks.initializeMocks()
 	})
 
 	afterEach(() => {
@@ -19,58 +18,58 @@ describe('Instantiate partial dbHandler', () => {
 
 	test('should create a firestore instance', () => {
 		dbHandler = new FirebaseHandler({
-			admin: adminMock,
-			logger: loggerMock,
-			config: emptyConfigMock,
+			admin: adminMocks.admin,
+			logger: loggerMocks.logger,
+			config: configMocks.baseConfig,
 		})
 		expect(dbHandler.getFirestoreInstance()).toBeDefined()
-		expect(adminMock.credential.applicationDefault).toHaveBeenCalled()
-		expect(adminMock.initializeApp).toHaveBeenCalled()
-		expect(adminMock.firestore).toHaveBeenCalled()
-		expect(settingsMock).toHaveBeenCalled()
+		expect(adminMocks.credential.applicationDefault).toHaveBeenCalled()
+		expect(adminMocks.initializeApp).toHaveBeenCalled()
+		expect(adminMocks.firestore).toHaveBeenCalled()
+		expect(adminMocks.settings).toHaveBeenCalled()
 	})
 
 	test('should create a realtime database instance', () => {
 		dbHandler = new FirebaseHandler({
-			admin: adminMock,
-			logger: loggerMock,
-			config: realtimeConfigMock,
+			admin: adminMocks.admin,
+			logger: loggerMocks.logger,
+			config: configMocks.realtimeConfig,
 		})
 		expect(dbHandler.getRealtimeInstance()).toBeDefined()
-		expect(adminMock.credential.applicationDefault).toHaveBeenCalled()
-		expect(adminMock.initializeApp).toHaveBeenCalled()
-		expect(adminMock.database).toHaveBeenCalled()
+		expect(adminMocks.credential.applicationDefault).toHaveBeenCalled()
+		expect(adminMocks.initializeApp).toHaveBeenCalled()
+		expect(adminMocks.database).toHaveBeenCalled()
 	})
 
 	test('should create a storage instance', () => {
 		dbHandler = new FirebaseHandler({
-			admin: adminMock,
-			logger: loggerMock,
-			config: storageConfigMock,
+			admin: adminMocks.admin,
+			logger: loggerMocks.logger,
+			config: configMocks.storageConfig,
 		})
 		expect(dbHandler.getStorageInstance()).toBeDefined()
-		expect(adminMock.credential.applicationDefault).toHaveBeenCalled()
-		expect(adminMock.initializeApp).toHaveBeenCalled()
-		expect(adminMock.storage).toHaveBeenCalled()
+		expect(adminMocks.credential.applicationDefault).toHaveBeenCalled()
+		expect(adminMocks.initializeApp).toHaveBeenCalled()
+		expect(adminMocks.storage).toHaveBeenCalled()
 	})
 
 	test('should throw an error if realtime database is not configured', () => {
 		dbHandler = new FirebaseHandler({
-			admin: adminMock,
-			logger: loggerMock,
-			config: emptyConfigMock,
+			admin: adminMocks.admin,
+			logger: loggerMocks.logger,
+			config: configMocks.baseConfig,
 		})
 		expect(() => dbHandler.getRealtimeInstance()).toThrow()
-		expect(loggerMock.error).toHaveBeenCalled()
+		expect(loggerMocks.logger.error).toHaveBeenCalled()
 	})
 
 	test('should throw an error if storage is not configured', () => {
 		dbHandler = new FirebaseHandler({
-			admin: adminMock,
-			logger: loggerMock,
-			config: emptyConfigMock,
+			admin: adminMocks.admin,
+			logger: loggerMocks.logger,
+			config: configMocks.baseConfig,
 		})
 		expect(() => dbHandler.getStorageInstance()).toThrow()
-		expect(loggerMock.error).toHaveBeenCalled()
+		expect(loggerMocks.logger.error).toHaveBeenCalled()
 	})
 })

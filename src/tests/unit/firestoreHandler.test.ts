@@ -1,17 +1,19 @@
 import { describe, test, expect, vi, beforeEach, afterEach } from 'vitest'
 import { FirestoreHandler } from '../../services/firestore/firestoreHandler'
-import { adminMock, settingsMock, terminateMock, loggerMock } from '../mocks/unit'
-import { configMock } from '../mocks/config'
+
+import * as adminMocks from '../mocks/firebase-admin'
+import * as configMocks from '../mocks/config'
+import * as loggerMocks from '../mocks/logger'
 
 describe('Instantiate firestoreHandler', () => {
 	let firestoreHandler: FirestoreHandler
 
 	beforeEach(() => {
-		adminMock.firestore.mockReturnValue({ settings: settingsMock, terminate: terminateMock })
+		adminMocks.initializeMocks()
 		firestoreHandler = new FirestoreHandler({
-			admin: adminMock,
-			config: configMock,
-			logger: loggerMock,
+			admin: adminMocks.admin,
+			config: configMocks.config,
+			logger: loggerMocks.logger,
 		})
 	})
 
@@ -31,36 +33,36 @@ describe('Instantiate firestoreHandler', () => {
 
 	test('should create a database instance', () => {
 		expect(firestoreHandler.getInstance('appMock')).toBeDefined()
-		expect(adminMock.firestore).toHaveBeenCalledWith('appMock')
-		expect(settingsMock).toHaveBeenCalled()
+		expect(adminMocks.firestore).toHaveBeenCalledWith('appMock')
+		expect(adminMocks.settings).toHaveBeenCalled()
 	})
 
 	test('should create only one database instance', () => {
 		expect(firestoreHandler.getInstance('appMock')).toBeDefined()
 		expect(firestoreHandler.getInstance('appMock')).toBeDefined()
-		expect(loggerMock.info).toHaveBeenCalledTimes(1)
-		expect(adminMock.firestore).toHaveBeenCalledWith('appMock')
-		expect(adminMock.firestore).toHaveBeenCalledTimes(1)
-		expect(settingsMock).toHaveBeenCalledTimes(1)
+		expect(loggerMocks.logger.info).toHaveBeenCalledTimes(1)
+		expect(adminMocks.firestore).toHaveBeenCalledWith('appMock')
+		expect(adminMocks.firestore).toHaveBeenCalledTimes(1)
+		expect(adminMocks.settings).toHaveBeenCalledTimes(1)
 	})
 
 	test('should disconnect from the database', async () => {
 		expect(firestoreHandler.getInstance('appMock')).toBeDefined()
 		await expect(firestoreHandler.disconnect()).resolves.toBeUndefined()
-		expect(adminMock.firestore).toHaveBeenCalledWith('appMock')
-		expect(loggerMock.info).toHaveBeenCalledTimes(2)
-		expect(terminateMock).toHaveBeenCalledTimes(1)
+		expect(adminMocks.firestore).toHaveBeenCalledWith('appMock')
+		expect(adminMocks.terminate).toHaveBeenCalledTimes(1)
+		expect(loggerMocks.logger.info).toHaveBeenCalledTimes(2)
 	})
 
 	test('should throw an error if the database connection fails', () => {
-		adminMock.firestore.mockImplementationOnce(() => {
+		adminMocks.firestore.mockImplementationOnce(() => {
 			throw new Error('Firestore error')
 		})
 		expect(() => firestoreHandler.getInstance('appMock')).toThrow()
 	})
 
 	test('should throw an error if the database disconnection fails', async () => {
-		terminateMock.mockImplementationOnce(() => {
+		adminMocks.terminate.mockImplementationOnce(() => {
 			throw new Error('Firestore error')
 		})
 		expect(firestoreHandler.getInstance('appMock')).toBeDefined()

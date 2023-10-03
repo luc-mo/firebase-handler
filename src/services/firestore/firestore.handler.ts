@@ -1,3 +1,5 @@
+import { FirestoreError } from './firestore.error'
+import { FirestoreLogs, FirestoreErrors } from './firestore.constant'
 import type { FirebaseApp, FirestoreDb } from '@/types/firebase'
 import type { DbService, Dependencies } from '@/types/dbHandler'
 
@@ -17,13 +19,13 @@ export class FirestoreHandler implements DbService<FirestoreDb> {
 
 	private _createInstance(app: FirebaseApp) {
 		try {
-			this._logger.info('Connecting to Firestore Database')
+			this._logger.info(FirestoreLogs.CONNECTION)
 			this._firestore = this._admin.firestore(app)
 			// TODO - add config and recommended settings
 			this._firestore.settings({ ignoreUndefinedProperties: true })
 			return this._firestore
 		} catch (error) {
-			this._handleInstanceError('Error in database connection:', error)
+			this._handleInstanceError(FirestoreErrors.CONNECTION, error)
 		}
 	}
 
@@ -47,20 +49,20 @@ export class FirestoreHandler implements DbService<FirestoreDb> {
 	public async disconnect() {
 		try {
 			if (!this._firestoreInstance) return
-			this._logger.info('Disconnecting from Firestore Database')
+			this._logger.info(FirestoreLogs.DISCONNECTION)
 			await this._firestoreInstance.terminate()
 			this._firestoreInstance = null
 			this._firestore = null
 		} catch (error) {
-			this._handleInstanceError('Error disconnecting from Firestore Database:', error)
+			this._handleInstanceError(FirestoreErrors.DISCONNECTION, error)
 		}
 	}
 
 	private _handleInstanceError(message: string, error: unknown): never {
 		this._logger.error(message, error)
 		if (error instanceof Error) {
-			throw new Error(`${message} ${error.message}`)
+			throw new FirestoreError(`${message}: ${error.message}`)
 		}
-		throw new Error(`${message} ${error}`)
+		throw new FirestoreError(`${message}: ${error}`)
 	}
 }

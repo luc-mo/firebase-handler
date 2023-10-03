@@ -42,7 +42,7 @@ Make sure to initialize the library with the required dependencies.
 ### Configuration
 Provide the Firebase configuration details:
 
-```javascript
+```ts
 const config = {
   firebase: {
     databaseURL: 'https://<DATABASE_NAME>.firebaseio.com',
@@ -52,10 +52,25 @@ const config = {
 ```
 Note: Both are optional, but you won't be able to use the services that require them.
 
+You can also provide the Firestore settings, which are optional, including the top-level configuration property. Also, you can use the "handlers" configuration to use our recommended settings for the services.
+```ts
+const config = {
+  firestore: {
+    // All compatible firestore settings provided by the firebase-admin library.
+  },
+  handlers: {
+    useFirestoreRecommendedSettings: true, // Recommended settings for firestore.
+  }
+}
+```
+
+The Firestore recommended settings enable `ignoreUndefinedProperties` property.
+
+
 ### Logger
 Set up your logger (here's a basic example):
 
-```javascript
+```ts
 const logger = {
   info: (message, data) => { console.log(message, data) },
   error: (message, data) => { console.error(message, data) }
@@ -65,7 +80,7 @@ const logger = {
 ### Initialization
 Using the provided configurations:
 
-```javascript
+```ts
 import * as admin from 'firebase-admin'
 import { FirebaseHandler } from '@snowdrive/firebase-handler'
 
@@ -79,25 +94,25 @@ const firebaseHandler = new FirebaseHandler(dependencies)
 ```
 
 ### Firestore
-```javascript
+```ts
 const firestore = firebaseHandler.getFirestoreInstance()
 ```
 
 ### Realtime Database
-```javascript
+```ts
 const realtimeDb = firebaseHandler.getRealtimeInstance()
 ```
 Note: Ensure your configuration includes `databaseURL`.
 
 ### Storage
-```javascript
+```ts
 const storage = firebaseHandler.getStorageInstance()
 ```
 Note: Ensure your configuration includes `storageBucket`.
 
 ### Disconnect
 To disconnect from all services:
-```javascript
+```ts
 firebaseHandler.disconnect()
 ```
 

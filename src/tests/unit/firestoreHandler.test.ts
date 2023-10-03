@@ -1,5 +1,5 @@
 import { describe, test, expect, vi, beforeEach, afterEach } from 'vitest'
-import { FirestoreHandler } from '../../services/firestore/firestoreHandler'
+import { FirestoreHandler } from '../../services/firestore/firestore.handler'
 
 import * as adminMocks from '../mocks/firebase-admin'
 import * as configMocks from '../mocks/config'

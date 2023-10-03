@@ -1,4 +1,4 @@
-import { FirestoreHandler } from '@/services/firestore/firestoreHandler'
+import { FirestoreHandler } from '@/services/firestore/firestore.handler'
 import type { FirebaseApp, RealtimeDb, StorageDb } from '@/types/firebase'
 import type { DbHandler, Dependencies } from '@/types/dbHandler'
 

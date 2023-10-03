@@ -1,5 +1,6 @@
 import { FirestoreHandler } from '@/services/firestore/firestoreHandler'
-import type { DbHandler, FirebaseApp, RealtimeDb, StorageDb, Dependencies } from '@/types/dbHandler'
+import type { FirebaseApp, RealtimeDb, StorageDb } from '@/types/firebase'
+import type { DbHandler, Dependencies } from '@/types/dbHandler'
 
 export class FirebaseHandler implements DbHandler {
 	private readonly _admin: Dependencies['admin']

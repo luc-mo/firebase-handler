@@ -1,8 +1,10 @@
-// Firebase Admin SDK types
-export type FirebaseApp = import('firebase-admin').app.App
-export type FirestoreDb = import('firebase-admin').firestore.Firestore
-export type RealtimeDb = import('firebase-admin').database.Database
-export type StorageDb = import('firebase-admin').storage.Storage
+import type {
+	FirebaseAdmin,
+	FirebaseApp,
+	FirestoreDb,
+	RealtimeDb,
+	StorageDb,
+} from '@/types/firebase'
 
 // Database handler and service interfaces
 export interface DbHandler {
@@ -35,7 +37,7 @@ export interface Logger {
 
 // Dependencies interface
 export interface Dependencies {
-	admin: typeof import('firebase-admin')
+	admin: FirebaseAdmin
 	config: AppConfig
 	logger: Logger
 }

@@ -1,0 +1,1 @@
+- [ ] Add config and recommended settings in firestore handler

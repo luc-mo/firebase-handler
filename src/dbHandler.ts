@@ -1,11 +1,5 @@
-import type {
-	DbHandler,
-	FirebaseApp,
-	FirestoreDb,
-	RealtimeDb,
-	StorageDb,
-	Dependencies,
-} from '@/types/dbHandler'
+import { FirestoreHandler } from '@/services/firestore/firestoreHandler'
+import type { DbHandler, FirebaseApp, RealtimeDb, StorageDb, Dependencies } from '@/types/dbHandler'
 
 export class FirebaseHandler implements DbHandler {
 	private readonly _admin: Dependencies['admin']
@@ -13,18 +7,19 @@ export class FirebaseHandler implements DbHandler {
 	private readonly _logger: Dependencies['logger']
 
 	private _app: FirebaseApp | null = null
-	private _firestore: FirestoreDb | null = null
 	private _realtimeDb: RealtimeDb | null = null
 	private _storage: StorageDb | null = null
 
-	private _firestoreInstance: FirestoreDb | null = null
 	private _realtimeInstance: RealtimeDb | null = null
 	private _storageInstance: StorageDb | null = null
 
-	constructor({ admin, config, logger }: Dependencies) {
-		this._admin = admin
-		this._config = config
-		this._logger = logger
+	private readonly _firestoreHandler: FirestoreHandler
+
+	constructor(dependencies: Dependencies) {
+		this._admin = dependencies.admin
+		this._config = dependencies.config
+		this._logger = dependencies.logger
+		this._firestoreHandler = new FirestoreHandler(dependencies)
 	}
 
 	private _initializeApp() {
@@ -46,19 +41,6 @@ export class FirebaseHandler implements DbHandler {
 			this._app = this._initializeApp()
 		}
 		return this._app
-	}
-
-	private _createFirestoreInstance() {
-		try {
-			this._logger.info('Connecting to database')
-			const app = this._connect()
-			this._firestore = this._admin.firestore(app)
-			this._firestore.settings({ ignoreUndefinedProperties: true })
-			return this._firestore
-		} catch (error) {
-			this._logger.error('Error in database connection', error)
-			throw new Error(`Error in database connection: ${error}`)
-		}
 	}
 
 	private _createRealtimeInstance() {
@@ -104,10 +86,7 @@ export class FirebaseHandler implements DbHandler {
 	 * @returns Firestore database instance
 	 */
 	public getFirestoreInstance() {
-		if (!this._firestoreInstance) {
-			this._firestoreInstance = this._createFirestoreInstance()
-		}
-		return this._firestoreInstance
+		return this._firestoreHandler.getInstance(this._connect())
 	}
 
 	/**
@@ -144,12 +123,12 @@ export class FirebaseHandler implements DbHandler {
 			this._app.delete()
 		}
 		this._app = null
-		this._firestore = null
 		this._realtimeDb = null
 		this._storage = null
 
-		this._firestoreInstance = null
 		this._realtimeInstance = null
 		this._storageInstance = null
+
+		this._firestoreHandler.disconnect()
 	}
 }

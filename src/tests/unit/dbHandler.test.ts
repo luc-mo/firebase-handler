@@ -1,6 +1,6 @@
 import { describe, test, expect, vi, beforeEach, afterEach } from 'vitest'
 import { FirebaseHandler } from '../../dbHandler'
-import { adminMock, deleteMock, settingsMock, loggerMock } from '../mocks/unit'
+import { adminMock, deleteMock, settingsMock, terminateMock, loggerMock } from '../mocks/unit'
 import { configMock } from '../mocks/config'
 
 describe('Instantiate dbHandler', () => {
@@ -8,7 +8,7 @@ describe('Instantiate dbHandler', () => {
 
 	beforeEach(() => {
 		adminMock.initializeApp.mockReturnValue({ delete: deleteMock })
-		adminMock.firestore.mockReturnValue({ settings: settingsMock })
+		adminMock.firestore.mockReturnValue({ settings: settingsMock, terminate: terminateMock })
 		adminMock.database.mockReturnValue({})
 		adminMock.storage.mockReturnValue({})
 		dbHandler = new FirebaseHandler({ admin: adminMock, logger: loggerMock, config: configMock })

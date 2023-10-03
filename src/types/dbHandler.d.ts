@@ -5,6 +5,8 @@ import type {
 	RealtimeDb,
 	StorageDb,
 } from '@/types/firebase'
+import type { AppConfig } from '@/types/config'
+import type { Logger } from '@/types/logger'
 
 // Database handler and service interfaces
 export interface DbHandler {
@@ -17,22 +19,6 @@ export interface DbHandler {
 export interface DbService<T extends FirestoreDb | RealtimeDb | StorageDb> {
 	getInstance: (app: FirebaseApp) => T
 	disconnect: () => void
-}
-
-// Configuration and logger interfaces
-export interface FirebaseConfig {
-	databaseURL: string
-	storageBucket: string
-}
-
-export interface AppConfig {
-	firebase?: Partial<FirebaseConfig>
-	[key: string]: any
-}
-
-export interface Logger {
-	info: (message: string, data?: any) => void
-	error: (message: string, data: any) => void
 }
 
 // Dependencies interface

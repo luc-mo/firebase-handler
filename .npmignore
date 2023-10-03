@@ -8,3 +8,4 @@ src
 tsconfig*
 tsup.config*
 vitest.config*
+TODO.md

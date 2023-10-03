@@ -1,1 +1,3 @@
-- [ ] Add config and recommended settings in firestore handler
+- [X] Add config and recommended settings in firestore handler
+- [ ] Add realtime database handler
+- [ ] Add storage handler

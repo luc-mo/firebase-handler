@@ -1,12 +1,12 @@
 import { FirestoreError } from './firestore.error'
-import { FirestoreLogs, FirestoreErrors } from './firestore.constant'
-import type { FirebaseApp, FirestoreDb } from '@/types/firebase'
+import { FirestoreLogs, FirestoreErrors, FirestoreRecommendedSettings } from './firestore.constant'
+import type { FirebaseApp, FirestoreDb, FirestoreSettings } from '@/types/firebase'
 import type { DbService, Dependencies } from '@/types/dbHandler'
 
 export class FirestoreHandler implements DbService<FirestoreDb> {
 	private readonly _admin: Dependencies['admin']
-	private readonly _logger: Dependencies['logger']
 	private readonly _config: Dependencies['config']
+	private readonly _logger: Dependencies['logger']
 
 	private _firestore: FirestoreDb | null = null
 	private _firestoreInstance: FirestoreDb | null = null
@@ -21,12 +21,22 @@ export class FirestoreHandler implements DbService<FirestoreDb> {
 		try {
 			this._logger.info(FirestoreLogs.CONNECTION)
 			this._firestore = this._admin.firestore(app)
-			// TODO - add config and recommended settings
-			this._firestore.settings({ ignoreUndefinedProperties: true })
+			this._firestore.settings(this._handleSettings())
 			return this._firestore
 		} catch (error) {
 			this._handleInstanceError(FirestoreErrors.CONNECTION, error)
 		}
+	}
+
+	private _handleSettings() {
+		const settings: FirestoreSettings = {}
+		if (this._config.handlers?.useFirestoreRecommendedSettings) {
+			Object.assign(settings, FirestoreRecommendedSettings)
+		}
+		if (this._config.firestore) {
+			Object.assign(settings, this._config.firestore)
+		}
+		return settings
 	}
 
 	/**

@@ -27,13 +27,26 @@ export class FirebaseHandler implements DbHandler {
 		try {
 			this._logger.info('Initialize Firebase App')
 			return this._admin.initializeApp({
-				credential: this._admin.credential.applicationDefault(),
+				credential: this._handleCredential(),
 				databaseURL: this._config.firebase?.databaseURL,
 				storageBucket: this._config.firebase?.storageBucket,
 			})
 		} catch (error) {
 			this._logger.error('Error initializing Firebase App', error)
 			throw new Error(`Error initializing Firebase App: ${error}`)
+		}
+	}
+
+	private _handleCredential() {
+		const credential = this._config.firebase?.credential
+		if (!credential) {
+			return this._admin.credential.applicationDefault()
+		}
+		if (credential.serviceAccount) {
+			return this._admin.credential.cert(credential.serviceAccount)
+		}
+		if (credential.refreshToken) {
+			return this._admin.credential.refreshToken(credential.refreshToken)
 		}
 	}
 

@@ -6,6 +6,7 @@ It's designed to handle singleton instances of those Firebase services, simplify
 [![npm latest package](https://img.shields.io/npm/v/@snowdrive/firebase-handler/latest?color=blue)](https://www.npmjs.com/package/@snowdrive/firebase-handler)
 [![npm downloads](https://img.shields.io/npm/dm/@snowdrive/firebase-handler)](https://www.npmjs.com/package/@snowdrive/firebase-handler)
 
+
 ## Table of Contents
 * [Features](#features)
 * [Installation](#installation)
@@ -27,7 +28,8 @@ It's designed to handle singleton instances of those Firebase services, simplify
 ## Features
 - Singleton instance handlers for Firestore, Realtime Database, and Storage.
 - Built-in disconnect method for easy cleanup.
-- TypeScript support out of the box.
+- Fully TypeScript support.
+
 
 ## Installation
 ```bash
@@ -36,22 +38,57 @@ yarn add @snowdrive/firebase-handler
 pnpm add @snowdrive/firebase-handler
 ```
 
+
 ## Usage
 Make sure to initialize the library with the required dependencies.
 
+
 ### Configuration
-Provide the Firebase configuration details:
+Firebase app credentials can be configurated in three ways:
+- Using `applicationDefault` function from the firebase-admin library.
+- Using a service account object or a path to a JSON file.
+- Using a refresh token.
+
+Note: By default, if you don't provide any credentials, the library will try to connect to the services using the `applicationDefault` option.
+
+#### Service account and refresh token
+```ts
+const credentialConfig = {
+  serviceAccount: {
+    projectId: "<PROJECT_ID>",
+    clientEmail: "foo@<PROJECT_ID>.iam.gserviceaccount.com",
+    privateKey: "-----BEGIN PRIVATE KEY-----<KEY>-----END PRIVATE KEY-----\n"
+  },
+  // or
+  refreshToken: "<REFRESH_TOKEN>"  
+}
+
+const config = {
+  firebase: {
+    credential: credentialConfig
+  }
+}
+```
+
+You can also provide the path to a JSON file containing the service account or the refresh token configuration.To read more about the Firebase App initialization, check the [official documentation](https://firebase.google.com/docs/admin/setup#initialize-sdk).
+
+Note: If you try to use both configuration properties, the service account object will be prioritized.
+
+#### Database and Storage
+To configurate the Realtime Database and Storage Bucket, you can use the `databaseURL` and `storageBucket` properties respectively.
 
 ```ts
 const config = {
   firebase: {
+    credential: { /* Previous configuration */ },
     databaseURL: 'https://<DATABASE_NAME>.firebaseio.com',
-    storageBucket: '<PROJECT_ID>.appspot.com'
+    storageBucket: '<PROJECT_ID>.appspot.com',
   }
 }
 ```
 Note: Both are optional, but you won't be able to use the services that require them.
 
+#### Additional settings
 You can also provide the Firestore settings, which are optional, including the top-level configuration property. Also, you can use the "handlers" configuration to use our recommended settings for the services.
 ```ts
 const config = {
@@ -59,7 +96,7 @@ const config = {
     // All compatible firestore settings provided by the firebase-admin library.
   },
   handlers: {
-    useFirestoreRecommendedSettings: true, // Recommended settings for firestore.
+    useFirestoreRecommendedSettings: true, // Enable recommended settings for Firestore.
   }
 }
 ```
@@ -77,7 +114,8 @@ const logger = {
 }
 ```
 
-### Initialization
+
+### Usage
 Using the provided configurations:
 
 ```ts
@@ -93,28 +131,29 @@ const dependencies = {
 const firebaseHandler = new FirebaseHandler(dependencies)
 ```
 
-### Firestore
+#### Firestore Database
 ```ts
 const firestore = firebaseHandler.getFirestoreInstance()
 ```
 
-### Realtime Database
+#### Realtime Database
 ```ts
 const realtimeDb = firebaseHandler.getRealtimeInstance()
 ```
 Note: Ensure your configuration includes `databaseURL`.
 
-### Storage
+#### Storage Bucket
 ```ts
 const storage = firebaseHandler.getStorageInstance()
 ```
 Note: Ensure your configuration includes `storageBucket`.
 
-### Disconnect
+#### Disconnect
 To disconnect from all services:
 ```ts
 firebaseHandler.disconnect()
 ```
+
 
 ## Development
 

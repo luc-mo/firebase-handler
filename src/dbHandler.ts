@@ -39,7 +39,7 @@ export class FirebaseHandler implements DbHandler {
 
 	private _handleCredential() {
 		const credential = this._config.firebase?.credential
-		if (!credential) {
+		if (!credential || !Object.keys(credential).length) {
 			return this._admin.credential.applicationDefault()
 		}
 		if (credential.serviceAccount) {
